@@ -5,7 +5,7 @@ Remote Internship @ Synent Technologies
 
 A simple, dependency-free web app that fetches and displays live user data from the public **GitHub REST API**, built with vanilla JavaScript and the Fetch API.
 
-🔗 **Live Demo:** _add your Vercel URL here after deploying_
+🔗 **Live Demo:** https://sol-api-integration.vercel.app
 
 ---
 
