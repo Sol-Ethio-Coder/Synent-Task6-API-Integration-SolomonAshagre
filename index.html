@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub Profile Explorer | Synent Technologies</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #58a6ff;
+    --accent2: #3fb950;
+    --error: #f85149;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: radial-gradient(circle at top, #161b22, #0d1117 60%);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .app {
+    width: 100%;
+    max-width: 480px;
+  }
+  .brand {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .brand h1 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .brand p {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-top: 4px;
+  }
+  .search-box {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  input[type="text"] {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  input[type="text"]:focus {
+    border-color: var(--accent);
+  }
+  button {
+    background: var(--accent);
+    color: #0d1117;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: opacity 0.2s, transform 0.1s;
+  }
+  button:hover { opacity: 0.85; }
+  button:active { transform: scale(0.97); }
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .placeholder {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 12px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .error-box {
+    color: var(--error);
+    font-size: 0.9rem;
+  }
+  .error-box .icon { font-size: 1.6rem; margin-bottom: 8px; }
+  .profile {
+    width: 100%;
+    text-align: left;
+    animation: fadeIn 0.4s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .profile-top {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .profile-top img {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+  }
+  .profile-top h2 {
+    font-size: 1.15rem;
+  }
+  .profile-top a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.85rem;
+  }
+  .bio {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .stat {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+  }
+  .stat strong {
+    display: block;
+    font-size: 1.1rem;
+    color: var(--accent2);
+  }
+  .stat span {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .meta {
+    font-size: 0.82rem;
+    color: var(--muted);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  footer {
+    text-align: center;
+    margin-top: 18px;
+    color: var(--muted);
+    font-size: 0.75rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="brand">
+    <h1>🐙 GitHub Profile Explorer</h1>
+    <p>Task 6 — API Integration · Synent Technologies Internship</p>
+  </div>
+
+  <div class="search-box">
+    <input type="text" id="username" placeholder="Enter a GitHub username..." value="octocat" />
+    <button id="searchBtn">Search</button>
+  </div>
+
+  <div class="card" id="resultCard">
+    <p class="placeholder">👋 Enter a username above and hit Search to fetch live data from the GitHub API.</p>
+  </div>
+
+  <footer>Built with Fetch API · Loading & error states handled</footer>
+</div>
+
+<script>
+  const input = document.getElementById('username');
+  const btn = document.getElementById('searchBtn');
+  const card = document.getElementById('resultCard');
+
+  async function fetchUser(username) {
+    // Loading state
+    card.innerHTML = `
+      <div class="spinner"></div>
+      <p class="placeholder">Fetching data for "${escapeHtml(username)}"...</p>
+    `;
+    btn.disabled = true;
+
+    try {
+      const response = await fetch(`https://api.github.com/users/${encodeURIComponent(username)}`);
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error(`No GitHub user found with username "${username}".`);
+        }
+        if (response.status === 403) {
+          throw new Error('API rate limit exceeded. Please try again in a bit.');
+        }
+        throw new Error(`Something went wrong (status ${response.status}).`);
+      }
+
+      const data = await response.json();
+      renderProfile(data);
+    } catch (err) {
+      renderError(err.message || 'Failed to fetch data. Check your connection and try again.');
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  function renderProfile(data) {
+    const joined = new Date(data.created_at).toLocaleDateString('en-US', {
+      year: 'numeric', month: 'long', day: 'numeric'
+    });
+
+    card.innerHTML = `
+      <div class="profile">
+        <div class="profile-top">
+          <img src="${data.avatar_url}" alt="${escapeHtml(data.login)} avatar" />
+          <div>
+            <h2>${escapeHtml(data.name || data.login)}</h2>
+            <a href="${data.html_url}" target="_blank" rel="noopener">@${escapeHtml(data.login)} ↗</a>
+          </div>
+        </div>
+        ${data.bio ? `<p class="bio">${escapeHtml(data.bio)}</p>` : ''}
+        <div class="stats">
+          <div class="stat"><strong>${data.public_repos}</strong><span>Repos</span></div>
+          <div class="stat"><strong>${data.followers}</strong><span>Followers</span></div>
+          <div class="stat"><strong>${data.following}</strong><span>Following</span></div>
+        </div>
+        <div class="meta">
+          ${data.location ? `<span>📍 ${escapeHtml(data.location)}</span>` : ''}
+          ${data.company ? `<span>🏢 ${escapeHtml(data.company)}</span>` : ''}
+          <span>📅 Joined ${joined}</span>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderError(message) {
+    card.innerHTML = `
+      <div class="error-box">
+        <div class="icon">⚠️</div>
+        <p>${escapeHtml(message)}</p>
+      </div>
+    `;
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  btn.addEventListener('click', () => {
+    const username = input.value.trim();
+    if (!username) {
+      renderError('Please enter a GitHub username.');
+      return;
+    }
+    fetchUser(username);
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') btn.click();
+  });
+
+  // Load a default example on first visit
+  fetchUser(input.value.trim());
+</script>
+
+</body>
+</html>
